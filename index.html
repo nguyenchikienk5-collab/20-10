@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng 20/10</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #fff1f2 0%, #ffe4e6 50%, #fecdd3 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- HIỆU ỨNG TỎA HOA (BLOOM OVERLAY) --- */
+        .bloom-flower-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 60px;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0;
+            transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.9s ease;
+            filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.6));
+        }
+
+        .bloom-flower-overlay.active {
+            transform: translate(-50%, -50%) scale(8);
+            opacity: 1;
+        }
+
+        /* Nền hoa/trái tim rơi (tự động chạy từ đầu) */
+        .falling-item {
+            position: absolute;
+            top: -10vh;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Khung chứa thiệp */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 400px;
+            max-width: 90vw;
+            height: 560px;
+            perspective: 1500px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(244, 63, 94, 0.15);
+            border-radius: 24px;
+        }
+
+        .card.opened {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Mặt trước */
+        .card-front {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #be123c;
+        }
+
+        .icon-box {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card-front h1 {
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #9f1239;
+        }
+
+        .card-front p {
+            font-size: 14px;
+            color: #881337;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-open {
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(244, 63, 94, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(244, 63, 94, 0.4);
+        }
+
+        /* Mặt sau (Nội dung) */
+        .card-back {
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+            color: #881337;
+            transform: rotateY(180deg);
+            justify-content: flex-start;
+            padding-top: 50px;
+        }
+
+        .card-back h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 38px;
+            color: #e11d48;
+            margin-bottom: 25px;
+        }
+
+        .message-box {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #4c0519;
+            min-height: 140px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 16px;
+            width: 100%;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            color: #e11d48;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .signature {
+            margin-top: 25px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 26px;
+            color: #be123c;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.6s ease;
+        }
+
+        .signature.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Lớp phủ tỏa hoa khi mở thiệp -->
+    <div class="bloom-flower-overlay" id="bloomOverlay">🌸</div>
+
+    <!-- Khung thiệp chính -->
+    <div class="container">
+        <div class="card" id="greetingCard" onclick="toggleCard()">
+            <!-- Mặt trước -->
+            <div class="card-face card-front">
+                <div class="icon-box">🎁🌷</div>
+                <h1>Gửi tặng một món quà nho nhỏ</h1>
+                <p>Nhấn vào nút bên dưới để mở thiệp nhé!</p>
+                <button class="btn-open">Mở Thiệp Ngay ✨</button>
+            </div>
+            
+            <!-- Mặt sau -->
+            <div class="card-face card-back">
+                <h2>Happy 20/10! 🌸</h2>
+                <div class="message-box">
+                    <span id="typedText"></span>
+                </div>
+                <div class="signature" id="signatureBox">~ Gửi từ bạn Kiên giấu tên ~</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const messageText = "Hôm nay là 20/10 t chúc Lan luôn  vui vẻ, rạng rỡ, xinh đẹp và gặp nhiều may mắn trong cuộc sống nhé. Sau này dù có gặp khó khăn thì vẫn có đủ mạnh mẽ để vượt qua, đủ dịu dàng để yêu thương bản thân và đủ niềm tin để đón nhận những điều tốt đẹp phía trước. 💐";
+        let isOpen = false;
+        let typingTimer;
+
+        function toggleCard() {
+            const card = document.getElementById('greetingCard');
+            const typedTextElement = document.getElementById('typedText');
+            const signatureBox = document.getElementById('signatureBox');
+            const bloomOverlay = document.getElementById('bloomOverlay');
+
+            card.classList.toggle('opened');
+            isOpen = !isOpen;
+
+            if (isOpen) {
+                // Kích hoạt hiệu ứng tỏa hoa bùng nổ từ tâm
+                bloomOverlay.classList.add('active');
+                setTimeout(() => {
+                    bloomOverlay.classList.remove('active');
+                }, 900);
+
+                typedTextElement.innerHTML = "";
+                signatureBox.classList.remove('show');
+                
+                // Đợi hiệu ứng lật thiệp chạy được một nửa thì bắt đầu gõ chữ
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => {
+                    typeWriter(messageText, 0, typedTextElement, signatureBox);
+                }, 600);
+            } else {
+                clearTimeout(typingTimer);
+                typedTextElement.classList.add('typing-cursor');
+            }
+        }
+
+        function typeWriter(text, index, element, signElement) {
+            if (index < text.length) {
+                element.innerHTML += text.charAt(index);
+                index++;
+                element.classList.add('typing-cursor');
+                typingTimer = setTimeout(() => typeWriter(text, index, element, signElement), 35);
+            } else {
+                element.classList.remove('typing-cursor');
+                signElement.classList.add('show');
+            }
+        }
+
+        // Hiệu ứng rơi tự động hoa, trái tim, sao nền
+        function createFallingItem() {
+            const item = document.createElement('div');
+            item.classList.add('falling-item');
+            
+            const symbols = ['🌸', '✨', '🌷', '💖', '⭐', '🌹'];
+            item.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            
+            item.style.left = Math.random() * window.innerWidth + 'px';
+            item.style.fontSize = (Math.random() * 12 + 16) + 'px';
+            
+            const duration = Math.random() * 3 + 4; // Tốc độ rơi từ 4s - 7s
+            item.style.animationDuration = duration + 's';
+            
+            // Xoay ngẫu nhiên
+            const rotation = Math.random() * 360;
+            item.style.transform = `rotate(${rotation}deg)`;
+
+            document.body.appendChild(item);
+
+            setTimeout(() => {
+                item.remove();
+            }, duration * 1000);
+        }
+
+        // KÍCH HOẠT HIỆU ỨNG NGAY KHI MỞ TRANG (Tạo sẵn một lượng hoa rơi ngay từ giây đầu)
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createFallingItem, i * 150);
+        }
+
+        // Tiếp tục tạo liên tục các phần tử rơi xuống mỗi 250ms
+        setInterval(createFallingItem, 250);
+    </script>
+</body>
+</html>
